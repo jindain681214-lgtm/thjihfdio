@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LG ThinQ Final App</title>
+    <title>LG ThinQ Final Demo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     
@@ -29,8 +29,50 @@
         body {
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
             background-color: #2c3e50;
+            position: relative;
         }
 
+        /* ================= 시나리오 보드 (8개 버튼) ================= */
+        .scenario-board {
+            position: absolute;
+            left: calc(50% + 230px);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            color: white;
+            z-index: 1000;
+            border: 1px solid rgba(255,255,255,0.1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .scenario-board::-webkit-scrollbar { width: 5px; }
+        .scenario-board::-webkit-scrollbar-thumb { background: #555; border-radius: 5px; }
+
+        .board-header { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: white; border-bottom: 1px solid #555; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;}
+        .group-title { font-size: 0.85rem; font-weight: 700; color: #aaa; margin: 15px 0 8px 0; text-transform: uppercase; letter-spacing: 1px; }
+
+        .scenario-btn {
+            width: 100%; padding: 12px; margin-bottom: 8px; border: none; border-radius: 10px;
+            font-size: 0.9rem; font-weight: 500; cursor: pointer; text-align: left;
+            transition: all 0.2s; display: flex; align-items: center; gap: 10px;
+            opacity: 0.5; filter: grayscale(0.6);
+        }
+        .scenario-btn:hover { opacity: 0.8; transform: translateX(3px); }
+        .scenario-btn.active { opacity: 1; filter: grayscale(0); box-shadow: 0 0 10px rgba(255,255,255,0.2); border: 1px solid white; transform: scale(1.02); font-weight: 700;}
+
+        .btn-blue { background: #e3f2fd; color: #1565c0; }
+        .btn-green { background: #e8f5e9; color: #2e7d32; }
+        .btn-yellow { background: #fffde7; color: #fbc02d; }
+        .btn-orange { background: #fff3e0; color: #ef6c00; }
+        .btn-red { background: #ffebee; color: #c62828; }
+        .s-dot { width: 8px; height: 8px; border-radius: 50%; display: block; }
+
+        /* ================= 폰 프레임 ================= */
         .phone-wrapper {
             width: var(--phone-width); height: var(--phone-height); max-height: 95vh;
             background: white; 
@@ -45,29 +87,19 @@
         .page.active { display: block; }
         @keyframes fadeEffect { from {opacity: 0;} to {opacity: 1;} }
 
-        /* ================= 로그인 페이지 스타일 ================= */
+        /* ================= UI 스타일 ================= */
+        /* 로그인 & 공통 */
         #page-login { padding: 60px 30px 40px; background: white; z-index: 200; height: 100%; overflow-y: auto;}
         .login-logo { font-size: 2.2rem; font-weight: 700; margin-bottom: 50px; color: #000; }
         .input-group { margin-bottom: 30px; }
         .input-label { display: block; font-size: 0.85rem; color: #666; margin-bottom: 8px; }
         .input-field { width: 100%; border: none; border-bottom: 1px solid #ddd; padding: 10px 0; font-size: 1.1rem; outline: none; transition: 0.2s; border-radius: 0; }
-        .input-field::placeholder { color: #ccc; font-weight: 300; }
-        .input-field:focus { border-bottom-color: #000; }
         .btn-login-grey { width: 100%; padding: 15px; background-color: #e4e7eb; color: #999; border: none; border-radius: 6px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .btn-login-grey:hover { background-color: #d1d4d8; color: #777; }
         .login-links { margin-top: 20px; text-align: center; font-size: 0.8rem; color: #666; display: flex; justify-content: center; gap: 15px; }
-        .login-links span { cursor: pointer; }
         .divider { text-align: center; margin: 40px 0 20px; position: relative; color: #999; font-size: 0.9rem; }
         .btn-lg-id { width: 100%; padding: 15px; background-color: var(--lg-red); color: white; border: none; border-radius: 6px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-bottom: 12px; }
-        .btn-outline { width: 100%; padding: 14px; background-color: white; color: #000; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-bottom: 40px; }
-        .social-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; color: #000; }
         .social-btn { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; background: white; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; cursor: pointer; font-size: 0.95rem; color: #333; font-weight: 500; }
-        .social-btn i { margin-right: 10px; font-size: 1.2rem; }
-        .fa-google { color: #db4437; } .fa-apple { color: #000; } .fa-facebook { color: #4267B2; } .fa-amazon { color: #ff9900; }
-        .kakao-icon { color: #3c1e1e; background: #fae100; padding: 2px 4px; border-radius: 3px; font-weight: 900; font-size: 0.8rem; margin-right: 10px;}
-        .naver-icon { color: white; background: #03c75a; padding: 2px 4px; border-radius: 3px; font-weight: 900; font-size: 0.8rem; margin-right: 10px;}
 
-        /* ================= 기존 앱 스타일 ================= */
         .home-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; margin-bottom: 10px; }
         .home-title { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .header-actions { display: flex; gap: 20px; font-size: 1.2rem; color: #333; }
@@ -75,15 +107,14 @@
         
         .device-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .device-card { background: var(--card-white); border-radius: var(--radius-card); padding: 18px; height: 130px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-soft); transition: 0.2s; cursor: pointer; }
-        .device-card:active { transform: scale(0.98); }
+        .device-card.on .d-icon { color: #333; }
+        .device-card.on .status-dot { background: #4caf50; box-shadow: 0 0 6px #4caf50; }
+        .device-card.on .card-body-row p { color: var(--accent-blue); font-weight: 600; }
         .card-header-row { display: flex; justify-content: space-between; align-items: flex-start; }
         .d-icon { font-size: 1.8rem; color: #aaa; }
         .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #ddd; }
         .card-body-row h4 { font-size: 1rem; font-weight: 600; margin-bottom: 3px; }
         .card-body-row p { font-size: 0.8rem; color: #999; }
-        .device-card.on .d-icon { color: #333; }
-        .device-card.on .status-dot { background: #4caf50; box-shadow: 0 0 6px #4caf50; }
-        .device-card.on .card-body-row p { color: var(--accent-blue); font-weight: 600; }
 
         .routine-btn { background: white; border-radius: 30px; padding: 12px 20px; display: inline-flex; align-items: center; gap: 10px; font-weight: 600; color: #333; box-shadow: var(--shadow-soft); margin-bottom: 20px;}
         .info-card { background: var(--card-white); border-radius: var(--radius-card); padding: 20px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: flex-start; box-shadow: var(--shadow-soft); }
@@ -99,17 +130,14 @@
         .tab-btn { flex: 1; text-align: center; padding: 15px 0; font-size: 0.95rem; font-weight: 500; color: #333; background: #fff; cursor: pointer; }
         .tab-btn:first-child { border-right: 1px solid #eee; }
         .coupon-banner { background: white; border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .coupon-icon { width: 45px; height: 45px; background: #ffebee; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #e53935; font-size: 1.2rem; }
         .menu-group-title { font-size: 0.95rem; font-weight: 600; color: #666; margin: 0 0 10px 5px; }
         .menu-list-box { background: white; border-radius: 16px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
         .menu-item { padding: 18px 20px; display: flex; align-items: center; gap: 15px; cursor: pointer; border-bottom: 1px solid #f8f8f8; }
         .menu-item:last-child { border-bottom: none; }
         .menu-item-icon { width: 24px; text-align: center; font-size: 1.1rem; }
         .menu-item-text { flex: 1; font-size: 1rem; color: #333; font-weight: 400; }
-        .icon-red { color: #e53935; } .icon-blue { color: #4285f4; } .icon-green { color: #00897b; } .icon-purple { color: #7e57c2; } .icon-orange { color: #fb8c00; } .icon-yellow { color: #fdd835; }
         .menu-footer { padding: 20px 0 120px; text-align: center; }
         .footer-links { display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; font-size: 0.8rem; color: #888; }
-        .footer-legal { font-size: 0.75rem; color: #aaa; line-height: 1.6; }
 
         .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 85px; background: #ffffff; display: flex; justify-content: space-around; align-items: flex-start; padding-top: 15px; border-top-left-radius: 25px; border-top-right-radius: 25px; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); z-index: 100; }
         .bottom-nav.hidden { display: none; }
@@ -118,21 +146,9 @@
         .nav-item span { font-size: 0.7rem; font-weight: 500; }
         .nav-item.active { color: #111; }
 
-        /* ================= [추가된 스타일] 케어, 마이페이지, 고객지원 ================= */
-        /* 서브 페이지 헤더 (뒤로가기) */
         .sub-page-header { display: flex; align-items: center; padding: 15px 0; font-size: 1.2rem; font-weight: 700; color: #333; gap: 15px; position: sticky; top:0; background: var(--menu-bg-color); z-index: 10; }
         .back-btn { cursor: pointer; font-size: 1.2rem; }
 
-        /* 케어 페이지 스타일 */
-        .care-main-title { font-size: 1.5rem; font-weight: 700; padding: 20px 0; color: #000;}
-        .care-card-icon-lg { font-size: 4rem; margin-bottom: 20px; display: block; text-align: center;}
-        .care-card-text { text-align: center; color: #666; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
-        .care-link { color: var(--accent-blue); font-weight: 600; text-decoration: none; display: flex; justify-content: center; align-items: center; gap: 5px; cursor: pointer;}
-        .bolt-icon { color: #d4e157; filter: drop-shadow(0 4px 6px rgba(212, 225, 87, 0.4)); }
-        .chart-icon { color: #81d4fa; filter: drop-shadow(0 4px 6px rgba(129, 212, 250, 0.4)); }
-        .care-footer-note { text-align: center; color: #aaa; font-size: 0.85rem; margin-top: 20px; }
-
-        /* 마이페이지 스타일 */
         .profile-section { display: flex; align-items: center; gap: 20px; margin-bottom: 25px; margin-top: 10px;}
         .profile-avatar { width: 70px; height: 70px; background: #e0e0e0; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; color: white; overflow: hidden;}
         .profile-name-row { display: flex; align-items: center; gap: 8px; font-size: 1.3rem; font-weight: 700; color: #000;}
@@ -142,7 +158,6 @@
         .empty-state-card { text-align: center; padding: 35px 20px; color: #666; font-size: 1rem; }
         .empty-state-link { display: block; margin-top: 25px; padding-top: 18px; border-top: 1px solid #f4f4f4; color: var(--accent-blue); font-weight: 600; cursor: pointer; }
 
-        /* 고객지원 페이지 스타일 */
         .support-card-red { background: white; border-radius: 16px; padding: 20px; display: flex; gap: 15px; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); align-items: flex-start;}
         .support-icon-red { color: var(--lg-red); font-size: 1.2rem; margin-top: 3px;}
         .support-list { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
@@ -153,9 +168,104 @@
         .support-icon-orange { color: #ff5722; font-size: 1.2rem; }
         .support-icon-green { color: #009688; font-size: 1.2rem; }
         .support-time { color: #888; font-size: 0.9rem; font-weight: 400;}
+
+        /* WaterQ & AI Styles */
+        .water-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+        .water-title { font-size: 1.5rem; font-weight: 700; color: #000; }
+        
+        .location-badge { background: white; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; color: #555; display: flex; align-items: center; gap: 6px; font-weight: 600; box-shadow: 0 2px 5px rgba(0,0,0,0.05); width: fit-content; margin-bottom: 20px; transition: 0.3s;}
+        
+        .split-card { background: white; border-radius: 20px; display: flex; overflow: hidden; height: 160px; box-shadow: var(--shadow-soft); margin-bottom: 30px; }
+        .split-item { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; position: relative; transition: background 0.3s;}
+        .split-item:first-child { border-right: 1px solid #f0f0f0; }
+        
+        .split-label { font-size: 0.9rem; color: #666; margin-bottom: 10px; font-weight: 500; }
+        .split-value { font-size: 1.8rem; font-weight: 700; color: #333; margin-bottom: 5px; }
+        .split-status { font-size: 0.8rem; padding: 4px 10px; border-radius: 10px; font-weight: 600; }
+        
+        /* Status Colors */
+        .status-clean { background: #e3f2fd; color: #1565c0; }
+        .status-cloudy { background: #fff8e1; color: #f9a825; }
+        .status-salty { background: #fff3e0; color: #ef6c00; }
+        .status-bad { background: #ffebee; color: #c62828; }
+        .status-good { background: #e8f5e9; color: #43a047; }
+
+        .water-device-list { display: flex; flex-direction: column; gap: 15px; }
+        .water-device-btn { background: white; border-radius: 16px; padding: 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-soft); cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
+        .water-device-btn:active { transform: scale(0.98); }
+        .water-device-btn:hover { border-color: var(--accent-blue); }
+        .wd-left { display: flex; align-items: center; gap: 15px; }
+        .wd-icon { width: 45px; height: 45px; background: #f0f4ff; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; color: var(--accent-blue); }
+        .wd-name { font-size: 1rem; font-weight: 600; color: #333; }
+        .wd-arrow { color: #ccc; }
+
+        .ai-hero-card { background: white; border-radius: 20px; padding: 30px 20px; text-align: center; margin-bottom: 25px; box-shadow: var(--shadow-soft); transition: 0.3s; }
+        .ai-hero-icon { width: 100px; height: 100px; background: linear-gradient(135deg, #4f83f1, #81d4fa); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; box-shadow: 0 8px 20px rgba(79, 131, 241, 0.3); transition: 0.3s;}
+        .ai-hero-icon i { font-size: 40px; color: white; }
+        .ai-hero-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: #222; }
+        .ai-hero-card p { font-size: 0.9rem; color: #666; }
+
+        .theme-clean .ai-hero-icon { background: linear-gradient(135deg, #42a5f5, #90caf9); box-shadow: 0 8px 20px rgba(66, 165, 245, 0.3); }
+        .theme-cloudy .ai-hero-icon { background: linear-gradient(135deg, #fdd835, #fff59d); box-shadow: 0 8px 20px rgba(253, 216, 53, 0.3); }
+        .theme-salty .ai-hero-icon { background: linear-gradient(135deg, #fb8c00, #ffcc80); box-shadow: 0 8px 20px rgba(251, 140, 0, 0.3); }
+        .theme-muddy .ai-hero-icon { background: linear-gradient(135deg, #e53935, #ef9a9a); box-shadow: 0 8px 20px rgba(229, 57, 53, 0.3); }
+
+        .ai-setting-list { background: white; border-radius: 20px; padding: 10px 20px; box-shadow: var(--shadow-soft); }
+        .ai-setting-item { display: flex; align-items: center; padding: 18px 0; border-bottom: 1px solid #f0f0f0; }
+        .ai-setting-item:last-child { border-bottom: none; }
+        .ai-setting-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; margin-right: 15px; }
+        
+        .bg-blue { background: #e3f2fd; color: #1565c0; }
+        .bg-green { background: #e8f5e9; color: #2e7d32; }
+        .bg-yellow { background: #fffde7; color: #fbc02d; }
+        .bg-orange { background: #fff3e0; color: #ef6c00; }
+        .bg-red { background: #ffebee; color: #c62828; }
+        .bg-purple { background: #f3e5f5; color: #7b1fa2; }
+        
+        .ai-setting-text { flex: 1; }
+        .ai-label { font-size: 0.9rem; color: #666; margin-bottom: 4px; display: block; }
+        .ai-value { font-size: 1.05rem; font-weight: 600; color: #333; }
+        
+        .bottom-action-area { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: white; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); border-top-left-radius: 25px; border-top-right-radius: 25px; }
+        .btn-primary-lg { width: 100%; padding: 18px; background: var(--accent-blue); color: white; border: none; border-radius: 16px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-primary-lg:active { transform: scale(0.98); opacity: 0.9; }
+
     </style>
 </head>
 <body>
+
+    <div class="scenario-board">
+        <div class="board-header">Scenario Controller <i class="fa-solid fa-sliders"></i></div>
+        
+        <div class="group-title">🇻🇳 하노이 (TDS 기준)</div>
+        <button class="scenario-btn btn-blue" onclick="setScenario('h_soft')">
+            <span class="s-dot" style="background:#1565c0"></span> 1. 좋음 (Soft)
+        </button>
+        <button class="scenario-btn btn-green" onclick="setScenario('h_normal')">
+            <span class="s-dot" style="background:#2e7d32"></span> 2. 보통 (Normal)
+        </button>
+        <button class="scenario-btn btn-yellow" onclick="setScenario('h_hard')">
+            <span class="s-dot" style="background:#fbc02d"></span> 3. 주의 (Hard)
+        </button>
+        <button class="scenario-btn btn-red" onclick="setScenario('h_veryhard')">
+            <span class="s-dot" style="background:#c62828"></span> 4. 위험 (Very Hard)
+        </button>
+
+        <div class="group-title" style="margin-top:20px;">🇻🇳 호찌민 (탁도/염분 기준)</div>
+        <button class="scenario-btn btn-blue" onclick="setScenario('hc_clean')">
+            <span class="s-dot" style="background:#1565c0"></span> 1. 청정 (Clean)
+        </button>
+        <button class="scenario-btn btn-yellow" onclick="setScenario('hc_cloudy')">
+            <span class="s-dot" style="background:#fbc02d"></span> 2. 흐림 (Cloudy)
+        </button>
+        <button class="scenario-btn btn-orange" onclick="setScenario('hc_salty')">
+            <span class="s-dot" style="background:#ef6c00"></span> 3. 염분 (Salty)
+        </button>
+        <button class="scenario-btn btn-red" onclick="setScenario('hc_muddy')">
+            <span class="s-dot" style="background:#c62828"></span> 4. 오염 (Muddy)
+        </button>
+    </div>
+
 
     <div class="phone-wrapper">
 
@@ -170,26 +280,17 @@
                 <input type="password" class="input-field" placeholder="비밀번호를 입력해 주세요">
             </div>
             <button class="btn-login-grey" onclick="doLogin()">로그인</button>
-            <div class="login-links">
-                <span>아이디 찾기</span> | <span>비밀번호 재설정</span> | <span>회원가입</span>
-            </div>
+            <div class="login-links"><span>회원가입</span></div>
             <div class="divider">OR</div>
             <button class="btn-lg-id" onclick="doLogin()">MY LG ID 로그인</button>
-            <button class="btn-outline">다른 계정으로 로그인</button>
-            <div class="social-title">다른 계정으로 로그인</div>
-            <button class="social-btn"><span class="kakao-icon">TALK</span> Kakao로 로그인</button>
-            <button class="social-btn"><span class="naver-icon">N</span> Naver로 로그인</button>
             <button class="social-btn"><i class="fa-brands fa-google"></i> Google로 로그인</button>
-            <button class="social-btn"><i class="fa-brands fa-apple"></i> Apple로 로그인</button>
-            <button class="social-btn"><i class="fa-brands fa-facebook"></i> Facebook으로 로그인</button>
-            <button class="social-btn"><i class="fa-brands fa-amazon"></i> Amazon으로 로그인</button>
         </div>
 
 
         <div id="page-home" class="page-container page">
             <header class="home-header">
                 <div class="home-title">LG DX 홈 <i class="fa-solid fa-chevron-down" style="font-size:0.8rem;color:#555;"></i></div>
-                <div class="header-actions"><i class="fa-solid fa-plus"></i> <i class="fa-solid fa-bell"></i> <i class="fa-solid fa-ellipsis-vertical"></i></div>
+                <div class="header-actions"><i class="fa-solid fa-plus"></i> <i class="fa-solid fa-bell"></i></div>
             </header>
             <div class="routine-btn"><i class="fa-regular fa-clock" style="color:#ffa000"></i><span>루틴 알아보기</span></div>
             <div class="info-card">
@@ -198,80 +299,109 @@
             </div>
             <div class="section-title">즐겨 찾는 제품</div>
             <div class="device-grid">
-                <div class="device-card off" onclick="toggleDevice(this)">
-                    <div class="card-header-row"><i class="fa-solid fa-utensils d-icon"></i><div class="status-dot"></div></div>
-                    <div class="card-body-row"><h4>식기세척기</h4><p>대기 중</p></div>
-                </div>
-                <div class="device-card on" onclick="toggleDevice(this)">
-                    <div class="card-header-row"><i class="fa-solid fa-glass-water d-icon"></i><div class="status-dot"></div></div>
-                    <div class="card-body-row"><h4>정수기</h4><p>냉수 켜짐</p></div>
-                </div>
-                <div class="device-card on" onclick="toggleDevice(this)">
-                    <div class="card-header-row"><i class="fa-solid fa-shirt d-icon"></i><div class="status-dot"></div></div>
-                    <div class="card-body-row"><h4>세탁기</h4><p>세탁 중 • 34분</p></div>
-                </div>
-                <div class="device-card off" onclick="toggleDevice(this)">
-                    <div class="card-header-row"><i class="fa-solid fa-wind d-icon"></i><div class="status-dot"></div></div>
-                    <div class="card-body-row"><h4>건조기</h4><p>전원 꺼짐</p></div>
-                </div>
+                <div class="device-card off" onclick="toggleDevice(this)"><div class="card-header-row"><i class="fa-solid fa-utensils d-icon"></i><div class="status-dot"></div></div><div class="card-body-row"><h4>식기세척기</h4><p>대기 중</p></div></div>
+                <div class="device-card on" onclick="toggleDevice(this)"><div class="card-header-row"><i class="fa-solid fa-glass-water d-icon"></i><div class="status-dot"></div></div><div class="card-body-row"><h4>정수기</h4><p>냉수 켜짐</p></div></div>
+                <div class="device-card on" onclick="toggleDevice(this)"><div class="card-header-row"><i class="fa-solid fa-shirt d-icon"></i><div class="status-dot"></div></div><div class="card-body-row"><h4>세탁기</h4><p>세탁 중 • 34분</p></div></div>
+                <div class="device-card off" onclick="toggleDevice(this)"><div class="card-header-row"><i class="fa-solid fa-wind d-icon"></i><div class="status-dot"></div></div><div class="card-body-row"><h4>건조기</h4><p>전원 꺼짐</p></div></div>
             </div>
-            <div class="play-banner"><div style="font-size:2rem;background:rgba(255,255,255,0.2);padding:10px;border-radius:50%;"><i class="fa-solid fa-play"></i></div><div><h3 style="font-size:1rem;margin-bottom:5px;">ThinQ PLAY</h3><p style="font-size:0.8rem;opacity:0.9;">앱을 다운로드하여 제품과 공간을 업그레이드해보세요.</p></div></div>
         </div>
+
 
         <div id="page-device" class="page-container page">
             <header class="home-header">
                 <div class="home-title" style="font-size: 1.2rem;">기기 목록</div>
-                <div class="header-actions">
-                    <i class="fa-solid fa-plus"></i>
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
-                </div>
+                <div class="header-actions"><i class="fa-solid fa-plus"></i> <i class="fa-solid fa-ellipsis-vertical"></i></div>
             </header>
             <div class="section-title" style="margin-top: 10px;">주방</div>
             <div class="device-grid">
-                <div class="device-card off" onclick="toggleDevice(this)">
-                    <div class="card-header-row"><i class="fa-solid fa-utensils d-icon"></i><div class="status-dot"></div></div>
-                    <div class="card-body-row"><h4>식기세척기</h4><p>대기 중</p></div>
-                </div>
-                <div class="device-card on" onclick="toggleDevice(this)">
-                    <div class="card-header-row"><i class="fa-solid fa-glass-water d-icon"></i><div class="status-dot"></div></div>
-                    <div class="card-body-row"><h4>정수기</h4><p>냉수 켜짐</p></div>
-                </div>
+                <div class="device-card off" onclick="toggleDevice(this)"><div class="card-header-row"><i class="fa-solid fa-utensils d-icon"></i><div class="status-dot"></div></div><div class="card-body-row"><h4>식기세척기</h4><p>대기 중</p></div></div>
+                <div class="device-card on" onclick="toggleDevice(this)"><div class="card-header-row"><i class="fa-solid fa-glass-water d-icon"></i><div class="status-dot"></div></div><div class="card-body-row"><h4>정수기</h4><p>냉수 켜짐</p></div></div>
             </div>
             <div class="section-title" style="margin-top: 30px;">생활 / 건강</div>
             <div class="device-grid">
-                <div class="device-card on" onclick="toggleDevice(this)">
-                    <div class="card-header-row"><i class="fa-solid fa-shirt d-icon"></i><div class="status-dot"></div></div>
-                    <div class="card-body-row"><h4>세탁기</h4><p>세탁 중 • 34분</p></div>
-                </div>
-                <div class="device-card off" onclick="toggleDevice(this)">
-                    <div class="card-header-row"><i class="fa-solid fa-wind d-icon"></i><div class="status-dot"></div></div>
-                    <div class="card-body-row"><h4>건조기</h4><p>전원 꺼짐</p></div>
-                </div>
+                <div class="device-card on" onclick="toggleDevice(this)"><div class="card-header-row"><i class="fa-solid fa-shirt d-icon"></i><div class="status-dot"></div></div><div class="card-body-row"><h4>세탁기</h4><p>세탁 중 • 34분</p></div></div>
+                <div class="device-card off" onclick="toggleDevice(this)"><div class="card-header-row"><i class="fa-solid fa-wind d-icon"></i><div class="status-dot"></div></div><div class="card-body-row"><h4>건조기</h4><p>전원 꺼짐</p></div></div>
             </div>
             <div style="height: 50px;"></div>
         </div>
 
-        <div id="page-care" class="page-container page" style="background: var(--menu-bg-color);">
-            <div class="care-main-title">11월 리포트</div>
-            
-            <div class="section-title" style="margin-top:10px;">우리집 제품 케어</div>
-            <div class="menu-list-box empty-state-card" style="padding: 40px 20px;">
-                <i class="fa-solid fa-clipboard-user care-card-icon-lg" style="color: #8d6e63;"></i> <p class="care-card-text">연결된 제품의 상태를 진단하고 문제 발생을<br>예방할 수 있어요.</p>
+
+        <div id="page-water" class="page-container page" style="background: var(--menu-bg-color);">
+            <div class="water-header">
+                <div class="water-title">LG WaterQ</div>
             </div>
 
-            <div class="section-title">제품 에너지 사용량</div>
-            <div class="menu-list-box empty-state-card" style="padding: 40px 20px;">
-                <i class="fa-solid fa-bolt care-card-icon-lg bolt-icon"></i>
-                <p class="care-card-text">지원 제품 또는 파트너사 계정을 연결하면<br>에너지 사용량을 알 수 있어요.</p>
-                <div class="care-link">자세히 보기 <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem;"></i></div>
+            <div class="location-badge" id="location-badge">
+                <i class="fa-solid fa-location-dot" style="color:#666;"></i> <span id="location-text">위치 확인 중...</span>
             </div>
 
-            <div class="section-title">제품 사용 리포트</div>
-            <div class="menu-list-box empty-state-card" style="padding: 40px 20px;">
-                <i class="fa-solid fa-chart-simple care-card-icon-lg chart-icon"></i>
-                <p class="care-card-text" style="margin-bottom:0;">지원되는 제품을 연결하면 사용 패턴을 볼 수<br>있어요.</p>
+            <div class="split-card">
+                <div class="split-item">
+                    <span class="split-label">TDS (용존고형물)</span>
+                    <span id="val-tds" class="split-value">--</span>
+                    <span id="status-tds" class="split-status">--</span>
+                </div>
+                <div class="split-item">
+                    <span class="split-label">탁도 (NTU)</span>
+                    <span id="val-turbidity" class="split-value">--</span>
+                    <span id="status-turbidity" class="split-status">--</span>
+                </div>
             </div>
-            <p class="care-footer-note">일부 제품만 리포트가 지원돼요.</p>
+
+            <div class="section-title">WaterQ AI 연동 기기</div>
+            <div class="water-device-list">
+                <div class="water-device-btn" onclick="openAIDetail('washer')">
+                    <div class="wd-left">
+                        <div class="wd-icon"><i class="fa-solid fa-shirt"></i></div>
+                        <div class="wd-name">세탁기</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right wd-arrow"></i>
+                </div>
+                <div class="water-device-btn" onclick="openAIDetail('dishwasher')">
+                    <div class="wd-left">
+                        <div class="wd-icon"><i class="fa-solid fa-utensils"></i></div>
+                        <div class="wd-name">식기세척기</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right wd-arrow"></i>
+                </div>
+                <div class="water-device-btn" onclick="openAIDetail('purifier')">
+                    <div class="wd-left">
+                        <div class="wd-icon"><i class="fa-solid fa-glass-water"></i></div>
+                        <div class="wd-name">정수기</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right wd-arrow"></i>
+                </div>
+                <div class="water-device-btn" onclick="openAIDetail('dryer')">
+                    <div class="wd-left">
+                        <div class="wd-icon"><i class="fa-solid fa-wind" style="color:#ff9800;"></i></div>
+                        <div class="wd-name">건조기</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right wd-arrow"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div id="page-ai-detail" class="page-container page" style="background: var(--menu-bg-color); padding-bottom: 100px; z-index: 200; display: none;">
+            <div class="sub-page-header">
+                <i class="fa-solid fa-arrow-left back-btn" onclick="goBackToWater()"></i>
+                <span id="ai-page-title">AI 스마트 설정</span>
+            </div>
+
+            <div id="ai-hero" class="ai-hero-card">
+                <div class="ai-hero-icon">
+                    <i id="ai-hero-icon-el" class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h3 id="ai-hero-title">--</h3>
+                <p id="ai-hero-desc">--</p>
+            </div>
+
+            <div class="section-title">AI 추천 설정</div>
+            <div class="ai-setting-list" id="ai-list-container">
+                </div>
+
+            <div class="bottom-action-area">
+                <button class="btn-primary-lg" onclick="startCycle()">설정 적용하여 시작</button>
+            </div>
         </div>
 
         <div id="page-menu" class="page-container page">
@@ -281,149 +411,291 @@
                 <div class="tab-btn" onclick="changePage('support')">고객 지원</div>
             </div>
             <div class="coupon-banner"><div class="coupon-icon"><i class="fa-solid fa-ticket"></i></div><div class="coupon-text"><h4>시크릿 쿠폰 프로모션</h4><p>ThinQ 회원 최대 12% 할인<br>~ 2025. 11. 28.</p></div></div>
-
             <div class="menu-group-title">제품 사용과 관리</div>
             <div class="menu-list-box">
                 <div class="menu-item"><i class="fa-solid fa-kit-medical menu-item-icon icon-red"></i><span class="menu-item-text">스마트 진단</span></div>
-                <div class="menu-item"><i class="fa-solid fa-circle-info menu-item-icon icon-blue"></i><span class="menu-item-text">제품 정보와 보증</span></div>
-                <div class="menu-item"><i class="fa-solid fa-book menu-item-icon icon-green"></i><span class="menu-item-text">제품 사용설명서</span></div>
-                <div class="menu-item"><i class="fa-regular fa-calendar-check menu-item-icon icon-red"></i><span class="menu-item-text">LG전자 구독</span></div>
             </div>
-
-            <div class="menu-group-title">제품 및 앱 활용</div>
-            <div class="menu-list-box">
-                <div class="menu-item"><i class="fa-solid fa-play menu-item-icon" style="color:#ff5252"></i><span class="menu-item-text">ThinQ PLAY</span></div>
-                <div class="menu-item"><i class="fa-solid fa-rotate menu-item-icon icon-purple"></i><span class="menu-item-text">스마트 루틴</span></div>
-                <div class="menu-item"><i class="fa-regular fa-compass menu-item-icon icon-purple"></i><span class="menu-item-text">ThinQ 활용하기</span></div>
-            </div>
-
-            <div class="menu-group-title">쇼핑</div>
-            <div class="menu-list-box"><div class="menu-item"><i class="fa-solid fa-bag-shopping menu-item-icon icon-red"></i><span class="menu-item-text">스토어</span></div></div>
-
-            <div class="menu-group-title">제휴 서비스</div>
-            <div class="menu-list-box">
-                <div class="menu-item"><i class="fa-solid fa-building menu-item-icon icon-blue"></i><span class="menu-item-text">우리 단지</span></div>
-                <div class="menu-item"><i class="fa-regular fa-lightbulb menu-item-icon icon-yellow"></i><span class="menu-item-text">생활 서비스</span></div>
-                <div class="menu-item"><i class="fa-solid fa-dumbbell menu-item-icon icon-orange"></i><span class="menu-item-text">LG 피트니스</span></div>
-            </div>
-
-            <div class="menu-list-box"><div class="menu-item"><i class="fa-solid fa-flask menu-item-icon icon-blue"></i><span class="menu-item-text">실험실</span></div></div>
-
             <div class="menu-footer">
-                <div class="footer-links"><span>LGE.COM</span> | <span>LG전자 멤버십</span> | <span>LG 베스트샵</span></div>
-                <div class="footer-legal">개인정보처리방침 | 이벤트 개인정보처리방침<br>이용약관 | 위치기반서비스 이용약관</div>
+                <div class="footer-links"><span>LGE.COM</span> | <span>LG전자 멤버십</span></div>
                 <button onclick="location.reload()" style="margin-top:20px; padding:8px 16px; border:1px solid #ddd; background:white; color:red; border-radius:4px;">로그아웃</button>
             </div>
         </div>
 
         <div id="page-mypage" class="page-container page" style="background: var(--menu-bg-color); z-index: 150;">
-            <div class="sub-page-header">
-                <i class="fa-solid fa-arrow-left back-btn" onclick="goBack()"></i>
-                <span>마이페이지</span>
-            </div>
-            
-            <div class="profile-section">
-                <div class="profile-avatar"><i class="fa-solid fa-user"></i></div>
-                <div>
-                    <div class="profile-name-row">사용자 <i class="fa-solid fa-pen" style="font-size:0.9rem; color:#888;"></i></div>
-                    <button class="edit-info-btn">내 정보 수정</button>
-                </div>
-            </div>
-
-            <div class="membership-bar">
-                <span>멤버십</span> <span class="membership-divider">|</span> <span>가입하기</span> <span class="membership-divider">|</span> <span>Q 리워드</span> <span class="membership-divider">|</span> <span>가입하기</span>
-            </div>
-
-            <div class="section-title">1:1 문의</div>
-            <div class="menu-list-box empty-state-card">
-                <p>지금은 진행 중인 문의가 없어요.</p>
-                <span class="empty-state-link">전체 문의 보기 <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem;"></i></span>
-            </div>
-
-            <div class="section-title">제품 정보와 보증</div>
-            <div class="menu-list-box empty-state-card">
-                <p>보증 기간 내의 제품이 없어요.</p>
-                <span class="empty-state-link">전체 제품 보기 <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem;"></i></span>
-            </div>
-
-            <div class="section-title">서비스 예약</div>
-            <div class="menu-list-box" style="padding:0;">
-                 <span class="empty-state-link" style="border:none; padding: 20px; text-align:center;">전체 예약 보기 <i class="fa-solid fa-chevron-right" style="font-size: 0.8rem;"></i></span>
-            </div>
-            <p class="care-footer-note" style="margin-bottom: 30px;">혹시 LGE.COM에서 구매한 상품이 있다면 <span style="text-decoration: underline;">여기</span>를 눌러 내<br>주문내역을 확인해보세요.</p>
+            <div class="sub-page-header"><i class="fa-solid fa-arrow-left back-btn" onclick="goBack()"></i><span>마이페이지</span></div>
+            <div class="profile-section"><div class="profile-avatar"><i class="fa-solid fa-user"></i></div><div><div class="profile-name-row">사용자 <i class="fa-solid fa-pen" style="font-size:0.9rem; color:#888;"></i></div><button class="edit-info-btn">내 정보 수정</button></div></div>
+            <div class="menu-list-box empty-state-card"><p>진행 중인 문의가 없어요.</p></div>
         </div>
-
 
         <div id="page-support" class="page-container page" style="background: var(--menu-bg-color); z-index: 150;">
-             <div class="sub-page-header">
-                <i class="fa-solid fa-arrow-left back-btn" onclick="goBack()"></i>
-                <span>고객 지원</span>
-            </div>
-
-            <div class="section-title" style="margin-top:20px;">LG전자 서비스</div>
-            <div class="support-card-red">
-                <i class="fa-solid fa-square-check support-icon-red"></i>
-                <div>
-                    <h4 style="font-size:1rem; margin-bottom:5px;">LG전자 서비스 예약</h4>
-                    <p style="font-size:0.85rem; color:#666; line-height:1.4;">서비스 예약, 매뉴얼 다운로드, 소모품 구매, 가전 설치, 이전 설치 등을 이용하실 수 있어요.</p>
-                </div>
-            </div>
-
-            <div class="section-title">문의하기</div>
-            <div class="support-list">
-                <div class="support-item">
-                    <div class="support-item-left">
-                        <i class="fa-regular fa-comment-dots support-icon-blue"></i> <span>1:1 문의</span>
-                    </div>
-                </div>
-                <div class="support-item">
-                    <div class="support-item-left">
-                        <i class="fa-solid fa-headset support-icon-orange"></i> <span>상담사 연결</span>
-                    </div>
-                    <span class="support-time">09:00-18:00</span>
-                </div>
-                <div class="support-item">
-                    <div class="support-item-left">
-                        <i class="fa-solid fa-circle-question support-icon-green"></i> <span>자주 하는 질문</span>
-                    </div>
-                </div>
-            </div>
+             <div class="sub-page-header"><i class="fa-solid fa-arrow-left back-btn" onclick="goBack()"></i><span>고객 지원</span></div>
+            <div class="support-card-red"><i class="fa-solid fa-square-check support-icon-red"></i><div><h4 style="font-size:1rem; margin-bottom:5px;">LG전자 서비스 예약</h4><p style="font-size:0.85rem; color:#666;">서비스 예약 및 상담을 이용하세요.</p></div></div>
         </div>
-
 
         <nav id="bottom-nav" class="bottom-nav hidden">
             <div class="nav-item active" onclick="changeTab('home', this)"><i class="fa-solid fa-house"></i><span>홈</span></div>
             <div class="nav-item" onclick="changeTab('device', this)"><i class="fa-solid fa-border-all"></i><span>디바이스</span></div>
-            <div class="nav-item" onclick="changeTab('care', this)"><i class="fa-solid fa-chart-simple"></i><span>케어</span></div>
+            <div class="nav-item" onclick="changeTab('water', this)"><i class="fa-solid fa-droplet"></i><span>수질</span></div>
             <div class="nav-item" onclick="changeTab('menu', this)"><i class="fa-solid fa-bars"></i><span>메뉴</span></div>
         </nav>
     </div>
 
     <script>
-        // 로그인 기능
+        // 전역 상태
+        let currentScenario = 'h_soft';
+        let currentDevice = 'washer'; // washer, dishwasher, purifier, dryer
+
+        // 시나리오 및 기기별 솔루션 데이터
+        const scenarioData = {
+            // ========================= 1. 하노이 그룹 =========================
+            h_soft: {
+                location: "베트남 하노이",
+                tds: { val: 80, status: "좋음 (연수)", class: "status-clean", color: "#1565c0" },
+                turbidity: { val: 0.1, status: "맑음", class: "status-clean", color: "#1565c0" },
+                aiTheme: "theme-clean",
+                solutions: {
+                    washer: { title: "세제 절약 모드", desc: "연수 상태입니다. 세제 잔류 걱정 없이 표준 헹굼으로 진행합니다.", items: [{ label: "세제", val: "-30% 감소", icon: "fa-jug-detergent", color: "bg-blue" }, { label: "헹굼", val: "표준 횟수", icon: "fa-rotate-right", color: "bg-blue" }] },
+                    dishwasher: { title: "연수 최적화", desc: "물 얼룩 걱정이 없습니다.", items: [{ label: "연수 장치", val: "꺼짐 (H0)", icon: "fa-sliders", color: "bg-blue" }, { label: "린스", val: "최소 투입 (L1)", icon: "fa-spray-can", color: "bg-blue" }] },
+                    purifier: { title: "청정 모드", desc: "수질이 매우 좋습니다.", items: [{ label: "필터", val: "정상", icon: "fa-filter", color: "bg-green" }] },
+                    dryer: { title: "표준 건조", desc: "특이 사항 없습니다.", items: [{ label: "모드", val: "표준", icon: "fa-sun", color: "bg-blue" }] }
+                }
+            },
+            h_normal: {
+                location: "베트남 하노이",
+                tds: { val: 150, status: "보통 (일반)", class: "status-good", color: "#2e7d32" },
+                turbidity: { val: 0.2, status: "맑음", class: "status-clean", color: "#1565c0" },
+                aiTheme: "theme-clean",
+                solutions: {
+                    washer: { title: "표준 운전", desc: "평균 수질입니다.", items: [{ label: "세탁", val: "표준 동작", icon: "fa-shirt", color: "bg-green" }] },
+                    dishwasher: { title: "표준 운전", desc: "제조사 권장 알고리즘 수행", items: [{ label: "세척", val: "표준", icon: "fa-utensils", color: "bg-green" }] },
+                    purifier: { title: "표준 정수", desc: "깨끗한 물을 공급합니다.", items: [{ label: "출수", val: "정상", icon: "fa-glass-water", color: "bg-green" }] },
+                    dryer: { title: "표준 건조", desc: "에너지 최적화 건조", items: [{ label: "모드", val: "표준", icon: "fa-sun", color: "bg-green" }] }
+                }
+            },
+            h_hard: {
+                location: "베트남 하노이",
+                tds: { val: 320, status: "주의 (경수)", class: "status-cloudy", color: "#f9a825" },
+                turbidity: { val: 0.5, status: "보통", class: "status-clean", color: "#1565c0" },
+                aiTheme: "theme-cloudy",
+                solutions: {
+                    washer: { title: "용해력 강화 모드", desc: "경수로 인한 세제 뭉침 방지", items: [{ label: "수온", val: "40°C 이상", icon: "fa-temperature-three-quarters", color: "bg-red" }, { label: "불림", val: "+20분", icon: "fa-clock", color: "bg-yellow" }, { label: "세제", val: "+20% 증량", icon: "fa-jug-detergent", color: "bg-yellow" }] },
+                    dishwasher: { title: "스케일 방어 모드", desc: "석회질 얼룩 최소화", items: [{ label: "연수 레벨", val: "H3 상향", icon: "fa-sliders", color: "bg-orange" }, { label: "소금", val: "투입량 증가", icon: "fa-cubes-stacked", color: "bg-orange" }, { label: "스팀", val: "강력 모드", icon: "fa-cloud", color: "bg-red" }] },
+                    purifier: { title: "안심 필터 모드", desc: "미네랄 스케일 제거 강화", items: [{ label: "세척", val: "멤브레인 2배", icon: "fa-rotate", color: "bg-blue" }] },
+                    dryer: { title: "스팀 제한 모드", desc: "경수 노즐 막힘 방지", items: [{ label: "급수", val: "직수 차단", icon: "fa-ban", color: "bg-red" }, { label: "권장", val: "물통 사용", icon: "fa-bottle-water", color: "bg-green" }] }
+                }
+            },
+            h_veryhard: {
+                location: "베트남 하노이",
+                tds: { val: 450, status: "위험 (심각)", class: "status-bad", color: "#c62828" },
+                turbidity: { val: 1.0, status: "보통", class: "status-clean", color: "#1565c0" },
+                aiTheme: "theme-muddy",
+                solutions: {
+                    washer: { title: "섬유 보호 모드", desc: "뻣뻣해짐 방지 및 살균", items: [{ label: "모션", val: "흔들기 위주", icon: "fa-shirt", color: "bg-purple" }, { label: "헹굼", val: "+2회 & 구연산", icon: "fa-hands-bubbles", color: "bg-blue" }, { label: "경고", val: "흰 옷 주의", icon: "fa-triangle-exclamation", color: "bg-red" }] },
+                    dishwasher: { title: "강력 연수 모드", desc: "기기 내부 석회 고착 방지", items: [{ label: "연수", val: "최대 (H5)", icon: "fa-sliders", color: "bg-red" }, { label: "유지보수", val: "구연산 세척", icon: "fa-soap", color: "bg-green" }] },
+                    purifier: { title: "RO 강화 모드", desc: "오염 물질 완벽 제거", items: [{ label: "필터", val: "교체 임박", icon: "fa-triangle-exclamation", color: "bg-red" }] },
+                    dryer: { title: "노즐 세척 강화", desc: "스케일 축적 방지", items: [{ label: "세척", val: "주기 단축 (10회)", icon: "fa-rotate", color: "bg-orange" }] }
+                }
+            },
+
+            // ========================= 2. 호찌민 그룹 =========================
+            hc_clean: {
+                location: "베트남 호찌민",
+                tds: { val: 60, status: "좋음", class: "status-clean", color: "#1565c0" },
+                turbidity: { val: 1.5, status: "청정", class: "status-clean", color: "#1565c0" },
+                aiTheme: "theme-clean",
+                solutions: {
+                    washer: { title: "표준 모드", desc: "에너지/물 절약 우선", items: [{ label: "코스", val: "표준", icon: "fa-check", color: "bg-blue" }] },
+                    dishwasher: { title: "표준 세척", desc: "물 절약 알고리즘", items: [{ label: "세척", val: "표준", icon: "fa-utensils", color: "bg-blue" }] },
+                    purifier: { title: "표준 정수", desc: "맑은 물 공급", items: [{ label: "상태", val: "양호", icon: "fa-check", color: "bg-green" }] },
+                    dryer: { title: "표준 건조", desc: "옷감 손상 최소화", items: [{ label: "모드", val: "표준", icon: "fa-sun", color: "bg-blue" }] }
+                }
+            },
+            hc_cloudy: {
+                location: "베트남 호찌민",
+                tds: { val: 120, status: "보통", class: "status-clean", color: "#1565c0" },
+                turbidity: { val: 8.5, status: "흐림 (부유물)", class: "status-cloudy", color: "#f9a825" },
+                aiTheme: "theme-cloudy",
+                solutions: {
+                    washer: { title: "물리적 세척 강화", desc: "흙먼지 제거 강화", items: [{ label: "전처리", val: "필터 확인", icon: "fa-filter", color: "bg-yellow" }, { label: "헹굼", val: "+2회 추가", icon: "fa-hands-bubbles", color: "bg-blue" }, { label: "물살", val: "TurboWash™", icon: "fa-wind", color: "bg-purple" }] },
+                    dishwasher: { title: "헹굼 강화", desc: "식기에 남은 입자 제거", items: [{ label: "헹굼", val: "추가", icon: "fa-hands-bubbles", color: "bg-blue" }, { label: "필터", val: "세척 알림", icon: "fa-broom", color: "bg-orange" }] },
+                    purifier: { title: "선제적 교체 알림", desc: "메인 필터 보호", items: [{ label: "알림", val: "1차 필터 세척", icon: "fa-broom", color: "bg-orange" }] },
+                    dryer: { title: "먼지 필터 케어", desc: "먼지 부착 방지", items: [{ label: "필터", val: "청소 요망", icon: "fa-filter", color: "bg-yellow" }] }
+                }
+            },
+            hc_salty: {
+                location: "베트남 호찌민 (염수)",
+                tds: { val: 420, status: "염분 높음", class: "status-salty", color: "#ef6c00" },
+                turbidity: { val: 3.0, status: "보통", class: "status-clean", color: "#1565c0" },
+                aiTheme: "theme-salty",
+                solutions: {
+                    washer: { title: "부식 방지 모드", desc: "소금기로 인한 부식 예방", items: [{ label: "경고", val: "염분 감지", icon: "fa-triangle-exclamation", color: "bg-orange" }, { label: "후처리", val: "통살균 코스", icon: "fa-soap", color: "bg-green" }] },
+                    dishwasher: { title: "부식 방지 모드", desc: "내부 스테인리스 보호", items: [{ label: "헹굼", val: "염분 제거", icon: "fa-hands-bubbles", color: "bg-blue" }, { label: "후처리", val: "통살균", icon: "fa-soap", color: "bg-green" }] },
+                    purifier: { title: "염분 제거 모드", desc: "RO 필터 부하 증가", items: [{ label: "정수", val: "속도 저하", icon: "fa-gauge-high", color: "bg-yellow" }] },
+                    dryer: { title: "건조기 사용 필수", desc: "자연 건조 시 끈적임 발생", items: [{ label: "살균", val: "가동 (습도High)", icon: "fa-temperature-arrow-up", color: "bg-red" }, { label: "세척", val: "콘덴서 2배", icon: "fa-rotate", color: "bg-blue" }] }
+                }
+            },
+            hc_muddy: {
+                location: "베트남 호찌민 (오염)",
+                tds: { val: 180, status: "보통", class: "status-clean", color: "#1565c0" },
+                turbidity: { val: 25.0, status: "위험 (진흙탕)", class: "status-bad", color: "#c62828" },
+                aiTheme: "theme-muddy",
+                solutions: {
+                    washer: { title: "비상 정지", desc: "기기 고장 위험으로 급수 차단", items: [{ label: "알림", val: "급수 차단", icon: "fa-ban", color: "bg-red" }, { label: "대안", val: "정수 물통 권장", icon: "fa-bottle-water", color: "bg-blue" }] },
+                    dishwasher: { title: "열탕 소독 모드", desc: "세균 증식 방지", items: [{ label: "살균", val: "80°C 헹굼", icon: "fa-temperature-arrow-up", color: "bg-red" }, { label: "필터", val: "세척 필수", icon: "fa-triangle-exclamation", color: "bg-orange" }] },
+                    purifier: { title: "출수 차단", desc: "음용수 오염 위험", items: [{ label: "잠금", val: "자동 설정", icon: "fa-lock", color: "bg-red" }, { label: "UV", val: "주기 30분", icon: "fa-sun", color: "bg-purple" }] },
+                    dryer: { title: "비상 살균", desc: "오염된 옷감 살균", items: [{ label: "코스", val: "살균(Sanitary)", icon: "fa-temperature-high", color: "bg-red" }] }
+                }
+            }
+        };
+
+        // 시나리오 설정 함수
+        function setScenario(key) {
+            currentScenario = key;
+            const data = scenarioData[key];
+
+            // 버튼 스타일 업데이트
+            document.querySelectorAll('.scenario-btn').forEach(btn => btn.classList.remove('active'));
+            // 해당 키를 가진 버튼 찾기
+            const btns = document.querySelectorAll('.scenario-btn');
+            for(let b of btns) {
+                if(b.getAttribute('onclick').includes(key)) {
+                    b.classList.add('active');
+                    break;
+                }
+            }
+
+            // 수질 페이지 업데이트
+            const locText = document.getElementById('location-text');
+            if(locText) locText.innerText = data.location;
+            
+            const tdsVal = document.getElementById('val-tds');
+            const tdsStat = document.getElementById('status-tds');
+            if(tdsVal) {
+                tdsVal.innerText = data.tds.val;
+                tdsVal.style.color = data.tds.color;
+                tdsStat.innerText = data.tds.status;
+                tdsStat.className = `split-status ${data.tds.class}`;
+            }
+
+            const turVal = document.getElementById('val-turbidity');
+            const turStat = document.getElementById('status-turbidity');
+            if(turVal) {
+                turVal.innerText = data.turbidity.val;
+                turVal.style.color = data.turbidity.color;
+                turStat.innerText = data.turbidity.status;
+                turStat.className = `split-status ${data.turbidity.class}`;
+            }
+            
+            // AI 페이지가 열려있다면 내용 갱신
+            if(document.getElementById('page-ai-detail').style.display === 'block') {
+                updateAIDetailContent();
+            }
+        }
+
+        // AI 상세 페이지 내용 업데이트 (기기별)
+        function updateAIDetailContent() {
+            const solutions = scenarioData[currentScenario].solutions;
+            const theme = scenarioData[currentScenario].aiTheme;
+            
+            // 선택된 기기에 맞는 솔루션이 없으면 기본값(washer) 사용 (방어 코드)
+            const deviceSol = solutions[currentDevice] || solutions['washer'];
+
+            // 헤더 & 히어로 업데이트
+            document.getElementById('ai-page-title').innerText = "AI " + getDeviceName(currentDevice) + " 설정";
+            
+            const hero = document.getElementById('ai-hero');
+            hero.className = `ai-hero-card ${theme}`; 
+            document.getElementById('ai-hero-title').innerText = deviceSol.title;
+            document.getElementById('ai-hero-desc').innerText = deviceSol.desc;
+            
+            // 아이콘 변경
+            const heroIconEl = document.getElementById('ai-hero-icon-el');
+            heroIconEl.className = `fa-solid ${getDeviceIcon(currentDevice)}`;
+
+            // 리스트 업데이트
+            const list = document.getElementById('ai-list-container');
+            list.innerHTML = '';
+            deviceSol.items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'ai-setting-item';
+                div.innerHTML = `
+                    <div class="ai-setting-icon ${item.color}"><i class="fa-solid ${item.icon}"></i></div>
+                    <div class="ai-setting-text">
+                        <span class="ai-label">${item.label}</span>
+                        <span class="ai-value">${item.val}</span>
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        function getDeviceName(key) {
+            if(key === 'washer') return '세탁기';
+            if(key === 'dishwasher') return '식기세척기';
+            if(key === 'purifier') return '정수기';
+            if(key === 'dryer') return '건조기';
+            return '기기';
+        }
+
+        function getDeviceIcon(key) {
+            if(key === 'washer') return 'fa-shirt';
+            if(key === 'dishwasher') return 'fa-utensils';
+            if(key === 'purifier') return 'fa-glass-water';
+            if(key === 'dryer') return 'fa-wind';
+            return 'fa-robot';
+        }
+
+        function openAIDetail(deviceKey) {
+            currentDevice = deviceKey;
+            updateAIDetailContent();
+            
+            document.getElementById('page-water').classList.remove('active');
+            const aiPage = document.getElementById('page-ai-detail');
+            aiPage.classList.add('active');
+            aiPage.style.display = 'block';
+            document.getElementById('bottom-nav').style.display = 'none';
+        }
+
+        function goBackToWater() {
+            const aiPage = document.getElementById('page-ai-detail');
+            aiPage.classList.remove('active');
+            aiPage.style.display = 'none';
+            document.getElementById('page-water').classList.add('active');
+            document.getElementById('bottom-nav').style.display = 'flex';
+        }
+
+        function startCycle() {
+            alert(`[${getDeviceName(currentDevice)}] ${scenarioData[currentScenario].solutions[currentDevice].title}를 시작합니다.`);
+            goBackToWater();
+        }
+
+        // --- 공통 기능 ---
         function doLogin() {
             const loginPage = document.getElementById('page-login');
             loginPage.style.opacity = '0';
             setTimeout(() => {
                 loginPage.classList.remove('active');
-                const homePage = document.getElementById('page-home');
-                homePage.classList.add('active');
+                document.getElementById('page-home').classList.add('active');
                 document.querySelector('.phone-wrapper').style.background = 'linear-gradient(180deg, #e8f4fd 0%, #f4f8fb 40%, #ffffff 100%)';
                 document.getElementById('bottom-nav').classList.remove('hidden');
+                setScenario('h_soft'); 
             }, 300);
         }
 
-        // 하단 탭 전환 기능
         function changeTab(pageId, navElement) {
-            // 모든 페이지 숨김 (마이페이지, 고객지원 포함)
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             
-            // 대상 페이지 활성화
+            // AI 페이지 숨김
+            const aiPage = document.getElementById('page-ai-detail');
+            if(aiPage) {
+                aiPage.classList.remove('active');
+                aiPage.style.display = 'none';
+            }
+
             document.getElementById('page-' + pageId).classList.add('active');
             
             const phoneWrapper = document.querySelector('.phone-wrapper');
-            // 메뉴, 케어 페이지는 회색 배경, 나머지는 그라데이션
-            if(pageId === 'menu' || pageId === 'care') {
+            if(pageId === 'menu' || pageId === 'water' || pageId === 'device') {
                 phoneWrapper.style.background = '#f6f7f9';
             } else {
                 phoneWrapper.style.background = 'linear-gradient(180deg, #e8f4fd 0%, #f4f8fb 40%, #ffffff 100%)';
@@ -431,28 +703,25 @@
 
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             navElement.classList.add('active');
+            document.getElementById('bottom-nav').style.display = 'flex';
         }
 
-        // [추가] 메뉴 내부 페이지 전환 (마이페이지, 고객지원)
         function changePage(pageId) {
-            // 현재 활성화된 페이지(메뉴) 숨김
             document.querySelector('.page.active').classList.remove('active');
-            // 대상 페이지 활성화
             document.getElementById('page-' + pageId).classList.add('active');
-             // 배경색 유지 (회색)
             document.querySelector('.phone-wrapper').style.background = '#f6f7f9';
         }
 
-        // [추가] 뒤로가기 기능 (메뉴로 복귀)
         function goBack() {
-             // 현재 활성화된 서브 페이지 숨김
-            document.querySelector('.page.active').classList.remove('active');
-            // 메뉴 페이지 활성화
-            document.getElementById('page-menu').classList.add('active');
+            const activePage = document.querySelector('.page.active');
+            if(activePage.id === 'page-ai-detail') {
+                goBackToWater();
+            } else if(activePage.id === 'page-mypage' || activePage.id === 'page-support') {
+                activePage.classList.remove('active');
+                document.getElementById('page-menu').classList.add('active');
+            }
         }
 
-
-        // 디바이스 토글 기능
         function toggleDevice(card) {
             const deviceName = card.querySelector('h4').innerText;
             if (card.classList.contains('off')) {
